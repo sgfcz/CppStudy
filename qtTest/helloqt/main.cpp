@@ -7,4 +7,5 @@ int main(int argc, char *argv[])
     QMainWindow mw;
     mw.show();
     app.exec();
+    return 0;
 }
