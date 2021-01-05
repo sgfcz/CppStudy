@@ -1,4 +1,4 @@
 qmake -project  
+add profile "QT += widgets"  
 qmake  
 make  
-add profile "QT += widgets"  
