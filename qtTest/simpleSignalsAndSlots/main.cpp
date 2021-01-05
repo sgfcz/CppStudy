@@ -1,6 +1,6 @@
 #include "counter.h"
 
-int main() 
+int main(int argc, char *argv[]) 
 {
     Counter a, b;
     QObject::connect(&a, &Counter::valuChanged, &b, &Counter::setValue);
