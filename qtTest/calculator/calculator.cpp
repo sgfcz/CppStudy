@@ -20,6 +20,9 @@ Calculator::Calculator(QWidget *parent)
 
     for (int i = 0; i < NumDigitButtons; ++i)
         digitButtons[i] = createButton(QString::number(i), SLOT(digitClicked()));
+    
+    Button *pointButton = createButton(tr("."), SLOT(pointClicked()));
+    Button *changeSignButton = createButton(tr("\302\261"))
 }
 
 void Calculator::digitClicked()
