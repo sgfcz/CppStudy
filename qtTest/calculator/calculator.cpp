@@ -50,10 +50,10 @@ Calculator::Calculator(QWidget *parent)
     mainLayout->addWidget(clearButton, 1,2,1,2);
     mainLayout->addWidget(clearAllButton, 1,4,1,2);
 
-    mainLayout->addWidget(clearMemoryButton, 1,0,1,2);
-    mainLayout->addWidget(readMemoryButton, 1,0,1,2);
-    mainLayout->addWidget(setMemoryButton, 1,0,1,2);
-    mainLayout->addWidget(addToMemoryButton, 1,0,1,2);
+    mainLayout->addWidget(clearMemoryButton, 2,0);
+    mainLayout->addWidget(readMemoryButton, 3,0);
+    mainLayout->addWidget(setMemoryButton, 4,0);
+    mainLayout->addWidget(addToMemoryButton, 5,0);
 
     for (int i = 1; i < NumDigitButtons; ++i)
     {
