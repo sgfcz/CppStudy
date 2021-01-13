@@ -7,7 +7,7 @@
 !*.md
 !*.pro
 !*.md
-!*image
+!*.png
 
 moc*
 
