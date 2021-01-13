@@ -31,6 +31,108 @@ Window::Window(QWidget *parent)
     setWindowTitle(tr("Calendar Widget"));
 }
 
+void Window::localeChanged(int index) {
+    const QLocale newLocale(localeCombo->itemData(index).toLocale());
+    calendar->setLocale(newLocale);
+    int newLocaleFirstDayIndex = firstDayCombo->findData(newLocale.firstDayOfWeek());
+    firstDayCombo->setCurrentIndex(newLocaleFirstDayIndex);
+}
+
+void Window::firstDayChanged(int index) {
+    calendar->setFirstDayOfWeek(Qt::DayOfWeek(firstDayCombo->itemData(index).toInt()));
+}
+
+void Window::selectionModeChanged(int index) {
+    calendar->setSelectionMode(QCalendarWidget::SelectionMode
+        (selectionModeCombo->itemData(index).toInt()));
+}
+
+void Window::horizontalHeaderChanged(int index) {
+    calendar->setHorizontalHeaderFormat(QCalendarWidget::HorizontalHeaderFormat
+        (horizontalHeaderCombo->itemData(index).toInt()));
+}
+
+void Window::verticalHeaderChanged(int index) {
+    calendar->setVerticalHeaderFormat(QCalendarWidget::VerticalHeaderFormat
+        (verticalHeaderCombo->itemData(index).toInt()));
+}
+
+void Window::selectedDateChanged() {
+    currentDateEdit->setDate(calendar->selectedDate());
+}
+
+void Window::minimumDateChanged(QDate date) {
+    calendar->setMinimumDate(date);
+    maximumDateEdit->setDate(calendar->maximumDate());
+}
+
+void Window::maximumDateChanged(QDate date) {
+    calendar->setMaximumDate(date);
+    minimumDateEdit->setDate(calendar->minimumDate());
+}
+
+void Window::weekdayFormatChanged() {
+    QTextCharFormat format;
+    format.setForeground(qvariant_cast<QColor>(
+        weekdayColorCombo->itemData(weekdayColorCombo->currentIndex())
+    ));
+    calendar->setWeekdayTextFormat(Qt::Monday, format);
+    calendar->setWeekdayTextFormat(Qt::Tuesday, format);
+    calendar->setWeekdayTextFormat(Qt::Wednesday, format);
+    calendar->setWeekdayTextFormat(Qt::Thursday, format);
+    calendar->setWeekdayTextFormat(Qt::Friday, format);
+}
+
+void Window::weekendFormatChanged() {
+    QTextCharFormat format;
+    format.setForeground(qvariant_cast<QColor>(
+        weekendColorCombo->itemData(weekendColorCombo->currentIndex())
+    ));
+    calendar->setWeekdayTextFormat(Qt::Saturday, format);
+    calendar->setWeekdayTextFormat(Qt::Sunday, format);
+}
+
+void Window::reformatHeaders() {
+    QString text = headerTextFormatCombo->currentText();
+    QTextCharFormat format;
+
+    if(text == tr("Bold"))
+        format.setFontWeight(QFont::Bold);
+    else if (text == tr("Italic"))
+        format.setFontItalic(true);
+    else if (text == tr("Green")) 
+        format.setForeground(Qt::green);
+    calendar->setHeaderTextFormat(format);
+}
+
+void Window::reformatCalendarPage() {
+    QTextCharFormat mayFirstFormat;
+    const QDate mayFirst(calendar->yearShown(), 5, 1);
+
+    QTextCharFormat firstFridayFormat;
+    QDate firstFriday(calendar->yearShown(), calendar->monthShown(), 1);
+    while (firstFriday.dayOfWeek() != Qt::Friday)
+        firstFriday = firstFriday.addDays(1);
+    
+    if(firstFridayCheckBox->isChecked()) {
+        firstFridayFormat.setForeground(Qt::blue);
+    } else {
+        Qt::DayOfWeek dayOfWeek(static_cast<Qt::DayOfWeek>(firstFriday.dayOfWeek()));
+        firstFridayFormat.setForeground(calendar->weekdayTextFormat(dayOfWeek).foreground());
+    }
+
+    calendar->setDateTextFormat(firstFriday, firstFridayFormat);
+
+    if (mayFirstCheckBox->isChecked()) {
+        mayFirstFormat.setForeground(Qt::red);
+    } else if (!firstFridayCheckBox->isChecked() || firstFriday != mayFirst) {
+        Qt::DayOfWeek dayOfWeek(static_cast<Qt::DayOfWeek>(mayFirst.dayOfWeek()));
+        calendar->setDateTextFormat(mayFirst, calendar->weekdayTextFormat(dayOfWeek));
+    }
+
+    calendar->setDateTextFormat(mayFirst, mayFirstFormat);
+}
+
 void Window::createPreviewGroupBox() {
     previewGroupBox = new QGroupBox(tr("Preview"));
 
@@ -231,7 +333,7 @@ void Window::createTextFormatsGroupBox(){
             this, &Window::reformatCalendarPage);
     connect(weekendColorCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &Window::weekendFormatChanged);
-    connect(weekendColorCombo, QOverload<int>::of(QComboBox::currentIndexChanged),
+    connect(weekendColorCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &Window::reformatCalendarPage);
     connect(headerTextFormatCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &Window::reformatHeaders);
