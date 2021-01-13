@@ -11,8 +11,7 @@
 #include <QTextCharFormat>
 
 Window::Window(QWidget *parent)
-    : QWidget(parent)
-{
+    : QWidget(parent) {
     createPreviewGroupBox();
     createGeneralOptionsGroupBox();
     createDatesGroupBox();
@@ -32,8 +31,7 @@ Window::Window(QWidget *parent)
     setWindowTitle(tr("Calendar Widget"));
 }
 
-void Window::createPreviewGroupBox()
-{
+void Window::createPreviewGroupBox() {
     previewGroupBox = new QGroupBox(tr("Preview"));
 
     calendar = new QCalendarWidget;
@@ -49,8 +47,7 @@ void Window::createPreviewGroupBox()
     previewGroupBox->setLayout(previewLayout);
 }
 
-void Window::createGeneralOptionsGroupBox()
-{
+void Window::createGeneralOptionsGroupBox() {
     generalOptionsGroupBox = new QGroupBox(tr("General Options"));
 
     localeCombo = new QComboBox;
@@ -137,6 +134,52 @@ void Window::createGeneralOptionsGroupBox()
 
     QGridLayout *outerLayout = new QGridLayout;
     outerLayout->addWidget(localeLabel, 0,0);
+    outerLayout->addWidget(localeCombo, 0,1);
+    outerLayout->addWidget(firstDayLabel, 1,0);
+    outerLayout->addWidget(firstDayCombo, 1,1);
+    outerLayout->addWidget(selectionModeLabel, 2,0);
+    outerLayout->addWidget(selectionModeCombo, 2,1);
+    outerLayout->addLayout(checkBoxLayout, 3, 0, 1, 2);
+    outerLayout->addWidget(horizontalHeaderLabel, 4,0);
+    outerLayout->addWidget(horizontalHeaderCombo, 4,1);
+    outerLayout->addWidget(verticalHeaderLabel, 5,0);
+    outerLayout->addWidget(verticalHeaderCombo, 5,1);
+    generalOptionsGroupBox->setLayout(outerLayout);
     
+    firstDayChanged(firstDayCombo->currentIndex());
+    selectionModeChanged(selectionModeCombo->currentIndex());
+    horizontalHeaderChanged(horizontalHeaderCombo->currentIndex());
+    verticalHeaderChanged(verticalHeaderCombo->currentIndex());
+}
 
+void Window::createDatesGroupBox() {
+    datesGroupBox = new QGroupBox(tr("Dates"));
+
+    minimumDateEdit = new QDateEdit;
+    minimumDateEdit->setDisplayFormat("MMM d yyyy");
+    minimumDateEdit->setDateRange(calendar->minimumDate(), calendar->maximumDate());
+    minimumDateEdit->setDate(calendar->minimumDate());
+
+    minimumDateLabel = new QLabel(tr("&Minimum Date:"));
+    minimumDateLabel->setBuddy(minimumDateEdit);
+
+    currentDateEdit = new QDateEdit;
+    currentDateEdit->setDisplayFormat("MMM d yyyy");
+    currentDateEdit->setDateRange(calendar->minimumDate(), calendar->maximumDate());
+    currentDateEdit->setDate(calendar->selectedDate());
+
+    currentDateLabel = new QLabel(tr("Ma&ximum Date:"));
+    currentDateLabel->setBuddy(currentDateEdit);
+
+    maximumDateEdit = new QDateEdit;
+    maximumDateEdit->setDisplayFormat("MMM d yyyy");
+    maximumDateEdit->setDateRange(calendar->minimumDate(), calendar->maximumDate());
+    maximumDateEdit->setDate(calendar->maximumDate());
+
+    maximumDateLabel = new QLabel(tr("&Minimum Date:"));
+    maximumDateLabel->setBuddy(maximumDateEdit);
+
+    connect(currentDateEdit, &QDateEdit::dateChanged,
+            calendar, &QCalendarWidget::setSelectedDate);
+    
 }
