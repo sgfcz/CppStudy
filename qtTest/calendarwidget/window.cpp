@@ -181,5 +181,90 @@ void Window::createDatesGroupBox() {
 
     connect(currentDateEdit, &QDateEdit::dateChanged,
             calendar, &QCalendarWidget::setSelectedDate);
-    
+    connect(calendar, &QCalendarWidget::selectionChanged,
+            this, &Window::selectedDateChanged);
+    connect(minimumDateEdit, &QDateEdit::dateChanged,
+            this, &Window::minimumDateChanged);
+    connect(maximumDateEdit, &QDateEdit::dateChanged,
+            this, &Window::maximumDateChanged);
+
+    QGridLayout *dateBoxLayout = new QGridLayout;
+    dateBoxLayout->addWidget(currentDateLabel, 1, 0);
+    dateBoxLayout->addWidget(currentDateEdit, 1, 1);
+    dateBoxLayout->addWidget(minimumDateLabel, 0, 0);
+    dateBoxLayout->addWidget(minimumDateEdit, 0, 1);
+    dateBoxLayout->addWidget(maximumDateLabel, 2, 0);
+    dateBoxLayout->addWidget(maximumDateEdit, 2, 1);
+    dateBoxLayout->setRowStretch(3, 1);
+
+    datesGroupBox->setLayout(dateBoxLayout);
+}
+
+void Window::createTextFormatsGroupBox(){
+    textFormatsGroupBox = new QGroupBox(tr("Text Formats"));
+
+    weekdayColorCombo = createColorComboBox();
+    weekdayColorCombo->setCurrentIndex(weekdayColorCombo->findText(tr("Black")));
+    weekdayColorLabel = new QLabel(tr("&Weekday color:"));
+    weekdayColorLabel->setBuddy(weekdayColorCombo);
+
+    weekendColorCombo = createColorComboBox();
+    weekendColorCombo->setCurrentIndex(weekdayColorCombo->findText(tr("red")));
+    weekendColorLabel = new QLabel(tr("Week&end color:"));
+    weekendColorLabel->setBuddy(weekendColorCombo);
+
+    headerTextFormatCombo = new QComboBox;
+    headerTextFormatCombo->addItem(tr("Bold"));
+    headerTextFormatCombo->addItem(tr("Italic"));
+    headerTextFormatCombo->addItem(tr("Plain"));
+
+    headerTextFormatLabel = new QLabel(tr("&Header text:"));
+    headerTextFormatLabel->setBuddy(headerTextFormatCombo);
+
+    firstFridayCheckBox = new QCheckBox(tr("&First Friday in blue"));
+
+    mayFirstCheckBox = new QCheckBox(tr("May &1 in red"));
+
+    connect(weekdayColorCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &Window::weekdayFormatChanged);
+    connect(weekdayColorCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &Window::reformatCalendarPage);
+    connect(weekendColorCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &Window::weekendFormatChanged);
+    connect(weekendColorCombo, QOverload<int>::of(QComboBox::currentIndexChanged),
+            this, &Window::reformatCalendarPage);
+    connect(headerTextFormatCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &Window::reformatHeaders);
+    connect(firstFridayCheckBox, &QCheckBox::toggled, this, &Window::reformatCalendarPage);
+    connect(mayFirstCheckBox, &QCheckBox::toggled, this, &Window::reformatCalendarPage);
+
+    QHBoxLayout *checkBoxLayout = new QHBoxLayout;
+    checkBoxLayout->addWidget(firstFridayCheckBox);
+    checkBoxLayout->addStretch();
+    checkBoxLayout->addWidget(mayFirstCheckBox);
+
+    QGridLayout *outerLayout = new QGridLayout;
+    outerLayout->addWidget(weekdayColorLabel, 0, 0);
+    outerLayout->addWidget(weekdayColorCombo, 0, 1);
+    outerLayout->addWidget(weekendColorLabel, 1, 0);
+    outerLayout->addWidget(weekdayColorCombo, 1, 1);
+    outerLayout->addWidget(headerTextFormatLabel, 2, 0);
+    outerLayout->addWidget(headerTextFormatCombo, 2, 1);
+    outerLayout->addLayout(checkBoxLayout, 3, 0, 1, 2);
+    textFormatsGroupBox->setLayout(outerLayout);
+
+    weekdayFormatChanged();
+    weekendFormatChanged();
+
+    reformatHeaders();
+    reformatCalendarPage();
+}
+
+QComboBox *Window::createColorComboBox() {
+    QComboBox *comboBox = new QComboBox;
+    comboBox->addItem(tr("Red"), QColor(Qt::red));
+    comboBox->addItem(tr("Blue"), QColor(Qt::blue));
+    comboBox->addItem(tr("Black"), QColor(Qt::black));
+    comboBox->addItem(tr("Magenta"), QColor(Qt::magenta));
+    return comboBox;
 }

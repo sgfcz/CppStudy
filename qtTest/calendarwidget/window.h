@@ -69,11 +69,11 @@ private:
 
     QGroupBox *textFormatsGroupBox;
     QLabel *weekdayColorLabel;
-    QLabel *weejebdColorLabel;
+    QLabel *weekendColorLabel;
     QLabel *headerTextFormatLabel;
-    QDateEdit *weekdayColorEdit;
-    QDateEdit *weejebdColorEdit;
-    QDateEdit *headerTextFormatEdit;
+    QComboBox *weekdayColorCombo;
+    QComboBox *weekendColorCombo;
+    QComboBox *headerTextFormatCombo;
 
     QCheckBox *firstFridayCheckBox;
     QCheckBox *mayFirstCheckBox;
