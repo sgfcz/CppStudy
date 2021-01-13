@@ -77,4 +77,66 @@ void Window::createGeneralOptionsGroupBox()
 
     firstDayCombo = new QComboBox;
     firstDayCombo->addItem(tr("Sunday"), Qt::Sunday);
+    firstDayCombo->addItem(tr("Monday"), Qt::Monday);
+    firstDayCombo->addItem(tr("Tuesday"), Qt::Tuesday);
+    firstDayCombo->addItem(tr("Wednesday"), Qt::Wednesday);
+    firstDayCombo->addItem(tr("Thursday"), Qt::Thursday);
+    firstDayCombo->addItem(tr("Friday"), Qt::Friday);
+    firstDayCombo->addItem(tr("Saturday"), Qt::Saturday);
+
+    firstDayLabel = new QLabel(tr("Wee&k starts on:"));
+    firstDayLabel->setBuddy(firstDayCombo);
+
+    selectionModeCombo = new QComboBox;
+    selectionModeCombo->addItem(tr("Single selection"), QCalendarWidget::SingleSelection);
+    selectionModeCombo->addItem(tr("None"), QCalendarWidget::NoSelection);
+
+    selectionModeLabel = new QLabel(tr("&Selection mode:"));
+    selectionModeLabel->setBuddy(selectionModeCombo);
+
+    gridCheckBox = new QCheckBox(tr("&Grid"));
+    gridCheckBox->setChecked(calendar->isGridVisible());
+
+    navigationCheckBox = new QCheckBox(tr("&Navigation bar"));
+    navigationCheckBox->setChecked(true);
+
+    horizontalHeaderCombo =new QComboBox;
+    horizontalHeaderCombo->addItem(tr("Single letter day names"), QCalendarWidget::SingleLetterDayNames);
+    horizontalHeaderCombo->addItem(tr("Short day names"), QCalendarWidget::ShortDayNames);
+    horizontalHeaderCombo->addItem(tr("None"), QCalendarWidget::NoHorizontalHeader);
+    horizontalHeaderCombo->setCurrentIndex(1);
+
+    horizontalHeaderLabel = new QLabel(tr("&Horizontal header:"));
+    horizontalHeaderLabel->setBuddy(horizontalHeaderCombo);
+
+    verticalHeaderCombo = new QComboBox;
+    verticalHeaderCombo->addItem(tr("ISO week numbers"), QCalendarWidget::ISOWeekNumbers);
+    verticalHeaderCombo->addItem(tr("None"), QCalendarWidget::NoVerticalHeader);
+
+    verticalHeaderLabel = new QLabel(tr("&Vertical header:"));
+    verticalHeaderLabel->setBuddy(verticalHeaderCombo);
+
+    connect(localeCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &Window::localeChanged);
+    connect(firstDayCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &Window::firstDayChanged);
+    connect(selectionModeCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &Window::selectionModeChanged);
+    connect(gridCheckBox, &QCheckBox::toggled,calendar, &QCalendarWidget::setGridVisible);
+    connect(navigationCheckBox, &QCheckBox::toggled,
+            calendar, &QCalendarWidget::setNavigationBarVisible);
+    connect(horizontalHeaderCombo,  QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &Window::horizontalHeaderChanged);
+    connect(verticalHeaderCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &Window::verticalHeaderChanged);
+    
+    QHBoxLayout *checkBoxLayout = new QHBoxLayout;
+    checkBoxLayout->addWidget(gridCheckBox);
+    checkBoxLayout->addStretch();
+    checkBoxLayout->addWidget(navigationCheckBox);
+
+    QGridLayout *outerLayout = new QGridLayout;
+    outerLayout->addWidget(localeLabel, 0,0);
+    
+
 }
