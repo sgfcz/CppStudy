@@ -270,7 +270,7 @@ void Window::createDatesGroupBox() {
     currentDateEdit->setDateRange(calendar->minimumDate(), calendar->maximumDate());
     currentDateEdit->setDate(calendar->selectedDate());
 
-    currentDateLabel = new QLabel(tr("Ma&ximum Date:"));
+    currentDateLabel = new QLabel(tr("C&urrent Date:"));
     currentDateLabel->setBuddy(currentDateEdit);
 
     maximumDateEdit = new QDateEdit;
@@ -278,7 +278,7 @@ void Window::createDatesGroupBox() {
     maximumDateEdit->setDateRange(calendar->minimumDate(), calendar->maximumDate());
     maximumDateEdit->setDate(calendar->maximumDate());
 
-    maximumDateLabel = new QLabel(tr("&Minimum Date:"));
+    maximumDateLabel = new QLabel(tr("Ma&ximum Date:"));
     maximumDateLabel->setBuddy(maximumDateEdit);
 
     connect(currentDateEdit, &QDateEdit::dateChanged,
