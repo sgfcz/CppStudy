@@ -311,7 +311,7 @@ void Window::createTextFormatsGroupBox(){
     weekdayColorLabel->setBuddy(weekdayColorCombo);
 
     weekendColorCombo = createColorComboBox();
-    weekendColorCombo->setCurrentIndex(weekdayColorCombo->findText(tr("red")));
+    weekendColorCombo->setCurrentIndex(weekendColorCombo->findText(tr("Red")));
     weekendColorLabel = new QLabel(tr("Week&end color:"));
     weekendColorLabel->setBuddy(weekendColorCombo);
 
@@ -349,7 +349,7 @@ void Window::createTextFormatsGroupBox(){
     outerLayout->addWidget(weekdayColorLabel, 0, 0);
     outerLayout->addWidget(weekdayColorCombo, 0, 1);
     outerLayout->addWidget(weekendColorLabel, 1, 0);
-    outerLayout->addWidget(weekdayColorCombo, 1, 1);
+    outerLayout->addWidget(weekendColorCombo, 1, 1);
     outerLayout->addWidget(headerTextFormatLabel, 2, 0);
     outerLayout->addWidget(headerTextFormatCombo, 2, 1);
     outerLayout->addLayout(checkBoxLayout, 3, 0, 1, 2);
