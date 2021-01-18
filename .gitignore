@@ -1,7 +1,7 @@
 *
 
 !*/
-!.vscode
+!/.vscode/*
 
 !*.cpp
 !*.h
@@ -11,4 +11,5 @@
 !*.png
 
 moc*
+
 
