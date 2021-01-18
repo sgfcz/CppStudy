@@ -23,7 +23,7 @@ public:
 
 public slots:
     void filterChanged(int);
-    void findStules(const QFont &font);
+    void findStyles(const QFont &font);
     void findSizes(const QFont &font);
     void insertCharacter(const QString &character);
 #ifndef QT_NO_CLIPBOARD
