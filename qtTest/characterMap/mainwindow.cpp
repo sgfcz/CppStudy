@@ -25,5 +25,5 @@ MainWindow::MainWindow(QWidget *parent)
 {
     QMenu *fileMenu = menuBar()->addMenu(tr("File"));
     fileMenu->addAction(tr("Quit"), this, &QWidget::close);
-    
+    QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
 }
