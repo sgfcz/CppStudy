@@ -164,3 +164,8 @@ void MainWindow::findSizes(const QFont &font)
     else
         sizeCombo->setCurrentIndex(sizeIndex);
 }
+
+void MainWindow::insertCharacter(const QString &character)
+{
+    lineEdit->insert(character);
+}
