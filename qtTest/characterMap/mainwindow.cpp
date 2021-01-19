@@ -124,5 +124,43 @@ void MainWindow::findStyles(const QFont &font)
     if (styleIndex == -1)
         styleCombo->setCurrentIndex(0);
     else
-        styleCombo->setCurrentIndex(styleIndex);
+        styleCombo->setCurrentIndex(styleIndex);   
+}
+
+void MainWindow::filterChanged(int f)
+{
+    const QFontComboBox::FontFilter filter = 
+        qvariant_cast<QFontComboBox::FontFilter>(filterCombo->itemData(f));
+    fontCombo->setFontFilters(filter);
+    statusBar()->showMessage(tr("%n font(s) found", nullptr, fontCombo->count()));
+}
+
+void MainWindow::findSizes(const QFont &font)
+{
+    QFontDatabase fontDatabase;
+    QString currentSize = sizeCombo->currentText();
+    {
+        const QSignalBlocker blocker(sizeCombo);
+        sizeCombo->clear();
+        
+        if (fontDatabase.isSmoothlyScalable(font.family(), fontDatabase.styleString(font))) {
+            const QList<int> sizes = QFontDatabase::standardSizes();
+            for (const int size:sizes) {
+                sizeCombo->addItem(QVariant(size).toString());
+                sizeCombo->setEditable(true);
+            }
+        } else {
+            const QList<int> sizes = fontDatabase.smoothSizes(font.family(), fontDatabase.styleString(font));
+            for (const int size : sizes) {
+                sizeCombo->addItem(QVariant(size).toString());
+                sizeCombo->setEditable(size);
+            }
+        }
+    }
+
+    int sizeIndex = sizeCombo->findText(currentSize);
+    if (sizeIndex == -1)
+        sizeCombo->setCurrentIndex(qMax(0, sizeCombo->count() / 3));
+    else
+        sizeCombo->setCurrentIndex(sizeIndex);
 }
