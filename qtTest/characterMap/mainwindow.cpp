@@ -120,4 +120,9 @@ void MainWindow::findStyles(const QFont &font)
         styleCombo->addItem(style);
     
     int styleIndex = styleCombo->findText(currentItem);
+
+    if (styleIndex == -1)
+        styleCombo->setCurrentIndex(0);
+    else
+        styleCombo->setCurrentIndex(styleIndex);
 }
