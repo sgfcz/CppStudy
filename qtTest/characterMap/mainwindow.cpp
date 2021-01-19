@@ -108,3 +108,12 @@ MainWindow::MainWindow(QWidget *parent)
     setCentralWidget(centralWidget);
     setWindowTitle(tr("Character Map"));
 }
+
+void MainWindow::findStyles(const QFont &font)
+{
+    QFontDatabase fontDatabase;
+    QString currentItem = styleCombo->currentText();
+    styleCombo->clear();
+
+    
+}
