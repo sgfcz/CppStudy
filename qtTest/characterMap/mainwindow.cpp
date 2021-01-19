@@ -115,5 +115,5 @@ void MainWindow::findStyles(const QFont &font)
     QString currentItem = styleCombo->currentText();
     styleCombo->clear();
 
-    
+    const QStringList styles = fontDatabase.styles(font.family());
 }
