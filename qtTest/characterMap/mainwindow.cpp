@@ -18,6 +18,7 @@
 #include <QScrollArea>
 #include <QStatusBar>
 #include <QTextStream>
+#include <QWidget>
 
 Q_DECLARE_METATYPE(QFontComboBox::FontFilter)
 
@@ -168,4 +169,63 @@ void MainWindow::findSizes(const QFont &font)
 void MainWindow::insertCharacter(const QString &character)
 {
     lineEdit->insert(character);
+}
+
+#ifndef QT_NO_CLIPBOARD
+void MainWindow::updateClipboard() 
+{
+    QGuiApplication::clipboard()->setText(lineEdit->text(), QClipboard::Clipboard);
+    QGuiApplication::clipboard()->setText(lineEdit->text(), QClipboard::Selection);
+}
+#endif
+
+class FontInfoDialog : public QDialog
+{
+public:
+    explicit FontInfoDialog(QWidget *parent = nullptr);
+private:
+    QString text() const;
+};
+
+FontInfoDialog::FontInfoDialog(QWidget *parent) : QDialog(parent)
+{
+    setWindowFlag(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    QVBoxLayout *mainlayout = new QVBoxLayout(this);
+    QPlainTextEdit *textEdit = new QPlainTextEdit(text(), this);
+    textEdit->setReadOnly(true);
+    textEdit->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
+    mainlayout->addWidget(textEdit);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, this);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+    mainlayout->addWidget(buttonBox);
+}
+
+QString FontInfoDialog::text() const
+{
+    QString text;
+    QTextStream str(&text);
+    const QFont defaulFont = QFontDatabase::systemFont(QFontDatabase::GeneralFont);
+    const QFont fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+    const QFont titleFont = QFontDatabase::systemFont(QFontDatabase::TitleFont);
+    const QFont smallestReadableFont = QFontDatabase::systemFont(QFontDatabase::SmallestReadableFont);
+
+    str << "Qt " << QT_VERSION_STR << " on " << QGuiApplication::platformName()
+        << ", " << logicalDpiX() << "DPI";
+    if (!qFuzzyCompare(devicePixelRatioF(), qreal(1)))
+        str << ", device pixel ratio: " << devicePixelRatioF();
+    str << "\n\nDefault font : " << defaulFont.family() << ", " << defaulFont.pointSizeF() << "pt\n"
+        << "Fixed font :" << fixedFont.family() << ", " << fixedFont.pointSizeF() << "pt\n"
+        << "Title font :" << titleFont.family() << ", " << titleFont.pointSizeF() << "pt\n"
+        << "Smallest font :" << smallestReadableFont.family() << ", " << smallestReadableFont.pointSizeF() << "pt\n";
+    return text;
+}
+
+void MainWindow::showInfo()
+{
+    const QRect screenGemotry = QApplication::desktop()->screenGeometry(this);
+    FontInfoDialog *dialog = new FontInfoDialog(this);
+    dialog->setWindowTitle(tr("Fonts"));
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->resize(screenGemotry.width() /4, screenGemotry.height() / 4);
+    dialog->show();
 }
