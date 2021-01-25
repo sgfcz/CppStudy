@@ -7,7 +7,8 @@ CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent)
     lineNumberArea = new LineNumberArea(this);
 
     connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
-    connect(this, SIGNAL(updateRequest(QRect, int)), this, SLOT(updateLineNumberAreaWidth(QRect, int)));
+    connect(this, SIGNAL(updateRequest(QRect, int)), 
+            this, SLOT(updateLineNumberAreaWidth(QRect, int)));
     connect(this, SIGNAL(cursorPositionChanged(int)), this, SLOT(highlighCurrentLine()));
 
     updateLineNumberAreaWidth(0);
@@ -56,12 +57,25 @@ void CodeEditor::highlighCurrentLine()
     QList<QTextEdit::ExtraSelection> extraSelections;
 
     if (!isReadOnly()) {
-        
+        QTextEdit::ExtraSelection selection;
+
+        QColor lineColor = QColor(Qt::yellow).light(160);
+
+        selection.format.setBackground(lineColor);
+        selection.format.setProperty(QTextFormat::FullWidthSelection, true);
+        selection.cursor = textCursor();
+        selection.cursor.clearSelection();
+        extraSelections.append(selection);
     }
+
+    setExtraSelections(extraSelections);
 }
 
 void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 {
+    QPainter painter(lineNumberArea);
+    painter.fillRect(event->rect(), Qt::lightGray);
 
+    
 }
 
