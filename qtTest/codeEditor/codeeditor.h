@@ -28,7 +28,7 @@ private slots:
     void highlighCurrentLine();
     void updateLineNumberArea(const QRect &, int);
 private:
-    QWidget *LineNumberArea;
+    QWidget *lineNumberArea;
 };
 
 class LineNumberArea : public QWidget
