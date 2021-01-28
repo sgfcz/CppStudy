@@ -49,3 +49,25 @@ public:
         BaseClass::f("DerivedLeve12");
     }
 };
+
+int main() 
+{
+    BaseClass bc;
+    Derived1Leve11  d111;
+    Derived2Leve11 d211;
+    DerivedLeve12 d12;
+    bc.f("main(1)");
+
+    //bc.g(); //不可访问
+    //bc.h(); //不可访问
+    d111.f("main(2)");
+    //d111.g();//不可访问你
+    d111.h("main(3)");
+    d211.f("main(4)");
+    //d211.g(); //不可访问
+    //d211.h();//不可访问
+    d12.f("main(5)");
+    //d12.g();//不可访问
+    d12.h();
+    return 0;
+}
