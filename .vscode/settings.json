@@ -19,6 +19,8 @@
         "streambuf": "cpp",
         "type_traits": "cpp",
         "variant": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "iosfwd": "cpp",
+        "fstream": "cpp"
     }
 }
