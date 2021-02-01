@@ -1,10 +1,6 @@
 #ifndef DATABASE
 #define DATABASE
 
-#include <fstream>
-#include <iostream>
-using namespace std;
-
 template<class T>
 class Database {
 public:
