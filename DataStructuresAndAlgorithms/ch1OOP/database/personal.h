@@ -3,18 +3,26 @@
 
 #include <fstream>
 #include <string>
+#include <cstring>
+#include <iostream>
 using namespace std;
 
 class Personal {
 public:
     Personal();
-    Personal(string* ,string* ,string* ,int,long);
+    Personal(char* ,char* ,char* ,int,long);
     void writeToFile(fstream&) const;
     void readFromFile(fstream&);
     void readkey();
+    int size() const {
+        return 9 + nameLen + cityLen + sizeof(year) + sizeof(salary);
+    }
+    bool operator==(const Personal& pr) const {
+        return strncmp(pr.SSN, SSN, 9) == 0;
+    }
 protected:
     const int nameLen, cityLen;
-    string *SSN, *name, *city;
+    char SSN[10], *name, *city;
     int year;
     long salary;
     ostream& writeLegibly(ostream&);
