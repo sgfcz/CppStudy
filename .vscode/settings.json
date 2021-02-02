@@ -23,5 +23,6 @@
         "iosfwd": "cpp",
         "fstream": "cpp",
         "*.tcc": "cpp"
-    }
+    },
+    "cquery.cacheDirectory": "${workspaceFolder}/.vscode/cquery_cached_index/"
 }

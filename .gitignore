@@ -1,14 +1,15 @@
 *
 
-!*/
 !/.vscode/*
 
+!CMakeLists.txt
 !*.cpp
 !*.h
 !*.md
 !*.pro
 !*.md
 !*.png
+
 
 moc*
 
