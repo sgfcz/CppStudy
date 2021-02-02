@@ -1,3 +1,6 @@
+#ifndef INT_LINKED_LIST
+#define INT_LINKED_LIST
+
 class IntSLLNode {
 public:
     IntSLLNode() {
@@ -11,3 +14,5 @@ public:
     int info;
     IntSLLNode *next;
 };
+
+#endif
