@@ -29,6 +29,7 @@ public:
     int deleteFromHead();
     int deleteFromTail();
     void deleteNode(int);
+    void Print();
     bool isInList(int) const;
 private:
     IntSLLNode *head, *tail;

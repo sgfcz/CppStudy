@@ -78,3 +78,11 @@ bool IntSLList::isInList(int el) const {
     for (tmp = head; tmp != 0 && !(tmp->info == el); tmp = tmp->next);
     return tmp != 0;
 }
+
+void IntSLList::Print() {
+    IntSLLNode *tmp = head;
+    while( tmp != tail ) {
+        std::cout << tmp->info << std::endl;
+        tmp = tmp->next;
+    }
+}
