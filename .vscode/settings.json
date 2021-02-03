@@ -24,5 +24,6 @@
         "fstream": "cpp",
         "*.tcc": "cpp"
     },
-    "cquery.cacheDirectory": "${workspaceFolder}/.vscode/cquery_cached_index/"
+    "cquery.cacheDirectory": "${workspaceFolder}/.vscode/cquery_cached_index/",
+    "cmake.sourceDirectory": "${workspaceFolder}/DataStructuresAndAlgorithms/ch3Linked_List/Singly_Linked_List"
 }
